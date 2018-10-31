@@ -117,8 +117,9 @@ public class BakingAppRepository {
         return mRecipeDao.getAllRecipes();
     }
 
-    public LiveData<RecipeResponse> getRecipe(int recipeId) {
+    public LiveData<RecipeResponse> getRecipeById(int recipeId) {
         initializeData();
         return mRecipeDao.getRecipeById(recipeId);
     }
+
 }

@@ -14,14 +14,12 @@ import com.zizohanto.bakingapp.data.database.RecipeResponse;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterViewHolder> {
 
     private List<RecipeResponse> mRecipes;
     private RecipeItemClickListener mOnClickListener;
 
-    public RecipeAdapter(Context context, RecipeItemClickListener listener) {
+    RecipeAdapter(Context context, RecipeItemClickListener listener) {
         mOnClickListener = listener;
     }
 
@@ -32,7 +30,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
                                                                     int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.recipes_list_item, parent, false);
+                .inflate(R.layout.recipes_list_content, parent, false);
 
         return new RecipeAdapterViewHolder(view);
 
@@ -49,8 +47,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
         holder.bind(mRecipes.get(position));
     }
 
-    public void setRecipeData(List<RecipeResponse> newRecipes) {
-        Timber.e("New recipe received");
+    void setRecipeData(List<RecipeResponse> newRecipes) {
         // If there was no recipe data, then recreate all of the list
         if (mRecipes == null) {
             mRecipes = newRecipes;
@@ -92,11 +89,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
     public class RecipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mRecipeName;
+        private TextView mRecipeServings;
 
         private RecipeAdapterViewHolder(View itemView) {
             super(itemView);
 
             mRecipeName = itemView.findViewById(R.id.tv_recipe_name);
+            mRecipeServings = itemView.findViewById(R.id.tv_recipe_servings);
             itemView.setOnClickListener(this);
         }
 
@@ -108,6 +107,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
         void bind(RecipeResponse recipeResponse) {
             mRecipeName.setText(recipeResponse.getName());
+            mRecipeServings.setText(String.format("Servings: %s", String.valueOf(recipeResponse.getServings())));
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.zizohanto.bakingapp.ui.dummy;
+package com.zizohanto.bakingapp.ui.recipedetail.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -12,12 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.RecipeResponse;
 import com.zizohanto.bakingapp.data.utils.InjectorUtils;
-import com.zizohanto.bakingapp.ui.ItemListActivity;
+import com.zizohanto.bakingapp.ui.recipedetail.ActDetailMaster;
 
 import java.util.List;
 
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
-public class RecipesActivity extends AppCompatActivity implements RecipeAdapter.RecipeItemClickListener {
+public class ActRecipes extends AppCompatActivity implements RecipeAdapter.RecipeItemClickListener {
+    public static final String EXTRA_RECIPE_ID = "com.zizohanto.bakingapp.ui.recipes.EXTRA_RECIPE_ID";
 
     private RecipesActViewModel mViewModel;
     private RecyclerView mRecyclerView;
@@ -26,7 +27,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recipes_act);
+        setContentView(R.layout.act_recipes);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_recipes);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -41,7 +42,7 @@ public class RecipesActivity extends AppCompatActivity implements RecipeAdapter.
 
     private void setupViewModel() {
         RecipesActViewModelFactory factory =
-                InjectorUtils.provideMFViewModelFactory(this);
+                InjectorUtils.provideRAViewModelFactory(this);
         mViewModel = ViewModelProviders.of(this, factory).get(RecipesActViewModel.class);
     }
 
@@ -58,7 +59,8 @@ public class RecipesActivity extends AppCompatActivity implements RecipeAdapter.
 
     @Override
     public void onRecipeClick(RecipeResponse clickedRecipe) {
-        Intent intent = new Intent(this, ItemListActivity.class);
+        Intent intent = new Intent(this, ActDetailMaster.class);
+        intent.putExtra(EXTRA_RECIPE_ID, clickedRecipe.getId());
         startActivity(intent);
     }
 }
