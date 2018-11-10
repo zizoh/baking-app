@@ -112,7 +112,7 @@ public class RecipeStepDescriptionAdapter
 
         ViewHolder(View view) {
             super(view);
-            mIdView = (TextView) view.findViewById(R.id.tv_step_title);
+            mIdView = (TextView) view.findViewById(R.id.tv_step_short_desc);
         }
     }
 }
