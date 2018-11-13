@@ -10,10 +10,10 @@ import com.zizohanto.bakingapp.data.BakingAppRepository;
  * Factory method to create a ViewModel with a constructor that takes a
  * {@link BakingAppRepository}
  */
-public class RecipesActViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class ActRecipesViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final BakingAppRepository mRepository;
 
-    public RecipesActViewModelFactory(BakingAppRepository repository) {
+    public ActRecipesViewModelFactory(BakingAppRepository repository) {
         mRepository = repository;
     }
 

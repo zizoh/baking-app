@@ -5,8 +5,10 @@ import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 
 import com.zizohanto.bakingapp.AppExecutors;
-import com.zizohanto.bakingapp.data.database.RecipeDao;
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeDao;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.step.Step;
+import com.zizohanto.bakingapp.data.database.step.StepDao;
 import com.zizohanto.bakingapp.data.network.NetworkDataSource;
 import com.zizohanto.bakingapp.data.utils.NetworkState;
 
@@ -25,15 +27,18 @@ public class BakingAppRepository {
     private static final Object LOCK = new Object();
     private static BakingAppRepository sInstance;
     private final RecipeDao mRecipeDao;
+    private final StepDao mStepDao;
     private final NetworkDataSource mNetworkDataSource;
     private final AppExecutors mExecutors;
 
     private boolean mInitialized = false;
 
     private BakingAppRepository(RecipeDao recipeDao,
+                                StepDao stepDao,
                                 NetworkDataSource networkDataSource,
                                 AppExecutors executors) {
         mRecipeDao = recipeDao;
+        mStepDao = stepDao;
         mNetworkDataSource = networkDataSource;
         mExecutors = executors;
 
@@ -51,7 +56,15 @@ public class BakingAppRepository {
                         deleteOldRecipeData();
                         Timber.d("Old recipes deleted");
 
-                        // Insert our new recipe data into PopularMovie's database
+                        for (RecipeResponse recipeResponse : newRecipesFromNetwork) {
+                            List<Step> steps = recipeResponse.getSteps();
+                            for (Step step : steps) {
+                                step.setRecipeId(recipeResponse.getId());
+                            }
+                            mStepDao.insert(steps);
+                        }
+
+                        // Insert our new recipe data into Baking App's database
                         mRecipeDao.insert(newRecipesFromNetwork);
                         Timber.d("New values inserted");
                     }
@@ -62,12 +75,13 @@ public class BakingAppRepository {
 
     public synchronized static BakingAppRepository getInstance(
             RecipeDao recipeDao,
+            StepDao stepDao,
             NetworkDataSource networkDataSource,
             AppExecutors executors) {
         Timber.d("Getting the repository");
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new BakingAppRepository(recipeDao, networkDataSource, executors);
+                sInstance = new BakingAppRepository(recipeDao, stepDao, networkDataSource, executors);
                 Timber.d("Made new repository");
             }
         }
@@ -79,6 +93,7 @@ public class BakingAppRepository {
      */
     private void deleteOldRecipeData() {
         mRecipeDao.deleteAllRecipes();
+        mStepDao.deleteAllSteps();
     }
 
     /**
@@ -120,6 +135,10 @@ public class BakingAppRepository {
     public LiveData<RecipeResponse> getRecipeById(int recipeId) {
         initializeData();
         return mRecipeDao.getRecipeById(recipeId);
+    }
+
+    public LiveData<Step> getStepById(int recipeId, int stepId) {
+        return mStepDao.getStepById(recipeId, stepId);
     }
 
 }

@@ -4,14 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.zizohanto.bakingapp.data.BakingAppRepository;
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 
-public class RecipeDetailViewModel extends ViewModel {
+public class ActDetailMasterViewModel extends ViewModel {
     private final int mRecipeId;
     private final BakingAppRepository mRepository;
     private LiveData<RecipeResponse> mRecipeResponse;
 
-    RecipeDetailViewModel(BakingAppRepository repository, int recipeId) {
+    ActDetailMasterViewModel(BakingAppRepository repository, int recipeId) {
         mRecipeId = recipeId;
         mRepository = repository;
         mRecipeResponse = mRepository.getRecipeById(mRecipeId);

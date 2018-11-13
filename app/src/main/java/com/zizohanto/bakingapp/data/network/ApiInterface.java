@@ -1,6 +1,6 @@
 package com.zizohanto.bakingapp.data.network;
 
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.zizohanto.bakingapp.data.BakingAppRepository;
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.utils.NetworkState;
 
 import java.util.List;

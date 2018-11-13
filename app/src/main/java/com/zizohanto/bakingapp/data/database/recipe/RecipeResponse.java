@@ -1,11 +1,13 @@
 
-package com.zizohanto.bakingapp.data.database;
+package com.zizohanto.bakingapp.data.database.recipe;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
+import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
+import com.zizohanto.bakingapp.data.database.step.Step;
 
 import java.util.List;
 

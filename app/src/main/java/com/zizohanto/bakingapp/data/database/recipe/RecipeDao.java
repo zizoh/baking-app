@@ -1,4 +1,4 @@
-package com.zizohanto.bakingapp.data.database;
+package com.zizohanto.bakingapp.data.database.recipe;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -22,7 +22,7 @@ public interface RecipeDao {
     LiveData<List<RecipeResponse>> getAllRecipes();
 
     // Insert recipes
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(List<RecipeResponse> recipes);
 
     //

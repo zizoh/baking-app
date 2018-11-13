@@ -6,11 +6,11 @@ import android.support.annotation.NonNull;
 
 import com.zizohanto.bakingapp.data.BakingAppRepository;
 
-public class RecipeDetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class ActDetailMasterViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final int mRecipeId;
     private final BakingAppRepository mRepository;
 
-    public RecipeDetailViewModelFactory(BakingAppRepository repository, int recipeId) {
+    public ActDetailMasterViewModelFactory(BakingAppRepository repository, int recipeId) {
         mRepository = repository;
         mRecipeId = recipeId;
     }
@@ -19,6 +19,6 @@ public class RecipeDetailViewModelFactory extends ViewModelProvider.NewInstanceF
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new RecipeDetailViewModel(mRepository, mRecipeId);
+        return (T) new ActDetailMasterViewModel(mRepository, mRecipeId);
     }
 }

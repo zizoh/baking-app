@@ -44,8 +44,10 @@ public class ActDetailDetail extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(FragRecipeDetail.ARG_ITEM_ID,
-                    getIntent().getStringExtra(FragRecipeDetail.ARG_ITEM_ID));
+            arguments.putInt(FragRecipeDetail.ARG_STEP_ID,
+                    getIntent().getIntExtra(FragRecipeDetail.ARG_STEP_ID, 0));
+            arguments.putInt(FragRecipeDetail.ARG_RECIPE_ID,
+                    getIntent().getIntExtra(FragRecipeDetail.ARG_RECIPE_ID, 0));
             FragRecipeDetail fragment = new FragRecipeDetail();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

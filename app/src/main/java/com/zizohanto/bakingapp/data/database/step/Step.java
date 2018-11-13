@@ -1,9 +1,18 @@
 
-package com.zizohanto.bakingapp.data.database;
+package com.zizohanto.bakingapp.data.database.step;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "step")
 public class Step {
+
+    @PrimaryKey(autoGenerate = true)
+    private int roomId;
+
+    private int recipeId;
 
     @SerializedName("id")
     private Integer id;
@@ -19,6 +28,22 @@ public class Step {
 
     @SerializedName("thumbnailURL")
     private String thumbnailURL;
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
+    }
 
     public Integer getId() {
         return id;

@@ -1,5 +1,5 @@
 
-package com.zizohanto.bakingapp.data.database;
+package com.zizohanto.bakingapp.data.database.ingredient;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -37,20 +37,4 @@ public class Ingredient {
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
-
-    /*StringBuilder sb = new StringBuilder();
-    sb.append(ingredientsListHeader);
-
-    for (Ingredient ingredient : ingredients) {
-
-      String name = ingredient.ingredient();
-      float quantity = ingredient.quantity();
-      String measure = ingredient.measure();
-
-      sb.append("\n");
-      sb.append(StringUtils.formatIngredient(getContext(), name, quantity, measure));
-    }
-
-    TextViewUtils.setTextWithSpan(recipeDetailsIngredients, sb.toString(), ingredientsListHeader,
-        new StyleSpan(Typeface.BOLD));*/
 }

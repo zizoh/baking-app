@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zizohanto.bakingapp.R;
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 
 import java.util.List;
 

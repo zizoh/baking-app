@@ -10,7 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.zizohanto.bakingapp.R;
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.utils.InjectorUtils;
 import com.zizohanto.bakingapp.ui.recipedetail.ActDetailMaster;
 
@@ -41,7 +41,7 @@ public class ActRecipes extends AppCompatActivity implements RecipeAdapter.Recip
     }
 
     private void setupViewModel() {
-        RecipesActViewModelFactory factory =
+        ActRecipesViewModelFactory factory =
                 InjectorUtils.provideRAViewModelFactory(this);
         mViewModel = ViewModelProviders.of(this, factory).get(RecipesActViewModel.class);
     }

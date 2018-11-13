@@ -12,10 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zizohanto.bakingapp.R;
-import com.zizohanto.bakingapp.data.database.Step;
+import com.zizohanto.bakingapp.data.database.step.Step;
 
 import java.util.List;
 
+@SuppressWarnings("RedundantCast")
 public class RecipeStepDescriptionAdapter
         extends RecyclerView.Adapter<RecipeStepDescriptionAdapter.ViewHolder> {
 
@@ -24,10 +25,15 @@ public class RecipeStepDescriptionAdapter
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Step item = (Step) view.getTag();
+            Step step = (Step) view.getTag();
+            int stepId = step.getId();
+            int recipeId = step.getRecipeId();
+
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putInt(FragRecipeDetail.ARG_ITEM_ID, item.getId());
+                arguments.putInt(FragRecipeDetail.ARG_STEP_ID, stepId);
+                arguments.putInt(FragRecipeDetail.ARG_RECIPE_ID, recipeId);
+
                 FragRecipeDetail fragment = new FragRecipeDetail();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -36,13 +42,14 @@ public class RecipeStepDescriptionAdapter
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, ActDetailDetail.class);
-                intent.putExtra(FragRecipeDetail.ARG_ITEM_ID, item.getId());
+                intent.putExtra(FragRecipeDetail.ARG_STEP_ID, stepId);
+                intent.putExtra(FragRecipeDetail.ARG_RECIPE_ID, recipeId);
 
                 context.startActivity(intent);
             }
         }
     };
-    private List<Step> mSteps;
+    private List<Step> mRecipeSteps;
 
     RecipeStepDescriptionAdapter(ActDetailMaster parent, boolean twoPane) {
         mParentActivity = parent;
@@ -51,14 +58,14 @@ public class RecipeStepDescriptionAdapter
 
     void setStepsData(List<Step> newSteps) {
         // If there was no step data, then recreate all of the list
-        if (mSteps == null) {
-            mSteps = newSteps;
+        if (mRecipeSteps == null) {
+            mRecipeSteps = newSteps;
             notifyDataSetChanged();
         } else {
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
-                    return mSteps.size();
+                    return mRecipeSteps.size();
                 }
 
                 @Override
@@ -68,19 +75,19 @@ public class RecipeStepDescriptionAdapter
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return mSteps.get(oldItemPosition).getId() ==
+                    return mRecipeSteps.get(oldItemPosition).getId() ==
                             newSteps.get(newItemPosition).getId();
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     Step newStep = newSteps.get(newItemPosition);
-                    Step oldStep = mSteps.get(oldItemPosition);
+                    Step oldStep = mRecipeSteps.get(oldItemPosition);
                     return newStep.getId() == oldStep.getId()
                             && newStep.getShortDescription().equals(oldStep.getShortDescription());
                 }
             });
-            mSteps = newSteps;
+            mRecipeSteps = newSteps;
             result.dispatchUpdatesTo(this);
         }
     }
@@ -95,16 +102,16 @@ public class RecipeStepDescriptionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mIdView.setText(mSteps.get(position).getShortDescription());
+        holder.mIdView.setText(mRecipeSteps.get(position).getShortDescription());
 
-        holder.itemView.setTag(mSteps.get(position));
+        holder.itemView.setTag(mRecipeSteps.get(position));
         holder.itemView.setOnClickListener(mOnClickListener);
     }
 
     @Override
     public int getItemCount() {
-        if (mSteps == null) return 0;
-        return mSteps.size();
+        if (mRecipeSteps == null) return 0;
+        return mRecipeSteps.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

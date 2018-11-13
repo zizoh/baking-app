@@ -15,8 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zizohanto.bakingapp.R;
-import com.zizohanto.bakingapp.data.database.Ingredient;
-import com.zizohanto.bakingapp.data.database.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.utils.InjectorUtils;
 import com.zizohanto.bakingapp.data.utils.StringUtils;
 import com.zizohanto.bakingapp.data.utils.TextViewUtils;
@@ -41,7 +41,7 @@ public class ActDetailMaster extends AppCompatActivity {
      */
     private boolean mTwoPane;
     private int mRecipeId;
-    private RecipeDetailViewModel mViewModel;
+    private ActDetailMasterViewModel mViewModel;
     private RecipeStepDescriptionAdapter mRecipeStepDescriptionAdapter;
     private TextView tvRecipeIngredients;
     private Context mContext;
@@ -82,9 +82,9 @@ public class ActDetailMaster extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        RecipeDetailViewModelFactory factory =
-                InjectorUtils.provideRDViewModelFactory(this, mRecipeId);
-        mViewModel = ViewModelProviders.of(this, factory).get(RecipeDetailViewModel.class);
+        ActDetailMasterViewModelFactory factory =
+                InjectorUtils.provideADMViewModelFactory(this, mRecipeId);
+        mViewModel = ViewModelProviders.of(this, factory).get(ActDetailMasterViewModel.class);
     }
 
     private void observeRecipeResponse() {
