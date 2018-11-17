@@ -11,12 +11,6 @@ import java.util.List;
 
 @Dao
 public interface RecipeDao {
-    /**
-     * @param id The id you want recipe for
-     * @return {@link LiveData} of recipe with id specified
-     */
-    @Query("SELECT * FROM recipe WHERE id = :id")
-    LiveData<RecipeResponse> getRecipeById(int id);
 
     @Query("SELECT * FROM recipe")
     LiveData<List<RecipeResponse>> getAllRecipes();

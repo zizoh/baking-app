@@ -7,7 +7,7 @@ import com.zizohanto.bakingapp.R;
 import java.util.Locale;
 
 public class StringUtils {
-    public static String formatIngredient(Context context, String name, float quantity, String measure) {
+    public static String formatIngredient(Context context, String name, double quantity, String measure) {
 
         String line = context.getResources().getString(R.string.recipe_details_ingredient_line);
 

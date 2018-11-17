@@ -1,10 +1,7 @@
 package com.zizohanto.bakingapp.ui.recipedetail;
 
 import android.app.Activity;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,10 +11,9 @@ import android.widget.TextView;
 
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.step.Step;
-import com.zizohanto.bakingapp.data.utils.InjectorUtils;
 
 /**
- * A fragment representing a single Item detail screen.
+ * A fragment representing a single Step detail screen.
  * This fragment is either contained in a {@link ActDetailMaster}
  * in two-pane mode (on tablets) or a {@link ActDetailDetail}
  * on handsets.
@@ -25,15 +21,11 @@ import com.zizohanto.bakingapp.data.utils.InjectorUtils;
 @SuppressWarnings("RedundantCast")
 public class FragRecipeDetail extends Fragment {
 
-    public static final String ARG_STEP_ID = "step_id";
-    public static final String ARG_RECIPE_ID = "recipe_id";
+    public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.ARG_STEP";
 
-    private int mRecipeId;
-    private int mStepId;
+    private Step mStep;
 
     private TextView mStepShortDescription;
-
-    private FragRecipeDetailViewModel mViewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,36 +38,15 @@ public class FragRecipeDetail extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_STEP_ID) && getArguments().containsKey(ARG_RECIPE_ID)) {
-            mStepId = getArguments().getInt(ARG_STEP_ID);
-            mRecipeId = getArguments().getInt(ARG_RECIPE_ID);
+        if (getArguments().containsKey(ARG_STEP)) {
+            mStep = getArguments().getParcelable(ARG_STEP);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(String.valueOf(mStepId));
+            if (appBarLayout != null && mStep != null) {
+                appBarLayout.setTitle(String.valueOf(mStep.getId()));
             }
-
-            setupViewModel();
-            observeStep();
         }
-    }
-
-    private void setupViewModel() {
-        FragRecipeDetailViewModelFactory factory = InjectorUtils.provideFRDViewModelFactory(getContext(),
-                mRecipeId, mStepId);
-        mViewModel = ViewModelProviders.of(this, factory).get(FragRecipeDetailViewModel.class);
-    }
-
-    private void observeStep() {
-        mViewModel.getStep().observe(this, new Observer<Step>() {
-            @Override
-            public void onChanged(@Nullable Step step) {
-                if (step != null) {
-                    mStepShortDescription.setText(String.valueOf(step.getShortDescription()));
-                }
-            }
-        });
     }
 
     @Override
@@ -85,6 +56,12 @@ public class FragRecipeDetail extends Fragment {
 
         mStepShortDescription = (TextView) rootView.findViewById(R.id.recipe_step_detail);
 
+        stepStepData(mStep);
+
         return rootView;
+    }
+
+    private void stepStepData(Step step) {
+        mStepShortDescription.setText(String.valueOf(step.getShortDescription()));
     }
 }

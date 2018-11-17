@@ -8,12 +8,10 @@ import android.content.Context;
 
 import com.zizohanto.bakingapp.data.database.recipe.RecipeDao;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
-import com.zizohanto.bakingapp.data.database.step.Step;
-import com.zizohanto.bakingapp.data.database.step.StepDao;
 
 import timber.log.Timber;
 
-@Database(entities = {RecipeResponse.class, Step.class}, version = 1)
+@Database(entities = {RecipeResponse.class}, version = 1)
 @TypeConverters({IngredientListTypeConverter.class, StepListTypeConverter.class})
 public abstract class BakingAppDatabase extends RoomDatabase {
 
@@ -37,7 +35,4 @@ public abstract class BakingAppDatabase extends RoomDatabase {
 
     // The associated DAO for the database
     public abstract RecipeDao recipeDao();
-
-    public abstract StepDao stepDao();
-
 }

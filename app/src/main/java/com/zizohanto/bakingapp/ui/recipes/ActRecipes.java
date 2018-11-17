@@ -18,7 +18,7 @@ import java.util.List;
 
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActRecipes extends AppCompatActivity implements RecipeAdapter.RecipeItemClickListener {
-    public static final String EXTRA_RECIPE_ID = "com.zizohanto.bakingapp.ui.recipes.EXTRA_RECIPE_ID";
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipes.EXTRA_RECIPE";
 
     private RecipesActViewModel mViewModel;
     private RecyclerView mRecyclerView;
@@ -60,7 +60,7 @@ public class ActRecipes extends AppCompatActivity implements RecipeAdapter.Recip
     @Override
     public void onRecipeClick(RecipeResponse clickedRecipe) {
         Intent intent = new Intent(this, ActDetailMaster.class);
-        intent.putExtra(EXTRA_RECIPE_ID, clickedRecipe.getId());
+        intent.putExtra(EXTRA_RECIPE, clickedRecipe);
         startActivity(intent);
     }
 }

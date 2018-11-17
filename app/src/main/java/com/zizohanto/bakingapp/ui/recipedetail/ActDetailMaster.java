@@ -1,12 +1,9 @@
 package com.zizohanto.bakingapp.ui.recipedetail;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
-import com.zizohanto.bakingapp.data.utils.InjectorUtils;
 import com.zizohanto.bakingapp.data.utils.StringUtils;
 import com.zizohanto.bakingapp.data.utils.TextViewUtils;
 import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
@@ -40,8 +36,7 @@ public class ActDetailMaster extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
-    private int mRecipeId;
-    private ActDetailMasterViewModel mViewModel;
+    private RecipeResponse mRecipeResponse;
     private RecipeStepDescriptionAdapter mRecipeStepDescriptionAdapter;
     private TextView tvRecipeIngredients;
     private Context mContext;
@@ -58,8 +53,8 @@ public class ActDetailMaster extends AppCompatActivity {
         tvRecipeIngredients = (TextView) findViewById(R.id.tv_recipe_ingredients);
         mContext = getBaseContext();
 
-        if (getIntent().hasExtra(ActRecipes.EXTRA_RECIPE_ID)) {
-            mRecipeId = getIntent().getIntExtra(ActRecipes.EXTRA_RECIPE_ID, 1);
+        if (getIntent().hasExtra(ActRecipes.EXTRA_RECIPE)) {
+            mRecipeResponse = getIntent().getParcelableExtra(ActRecipes.EXTRA_RECIPE);
         }
 
         if (findViewById(R.id.item_detail_container) != null) {
@@ -72,46 +67,34 @@ public class ActDetailMaster extends AppCompatActivity {
 
         mRecipeStepDescriptionAdapter = new RecipeStepDescriptionAdapter(this, mTwoPane);
 
-
-        setupViewModel();
-        observeRecipeResponse();
+        displayRecipeData(mRecipeResponse);
 
         View recyclerView = findViewById(R.id.rv_step_description);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
     }
 
-    private void setupViewModel() {
-        ActDetailMasterViewModelFactory factory =
-                InjectorUtils.provideADMViewModelFactory(this, mRecipeId);
-        mViewModel = ViewModelProviders.of(this, factory).get(ActDetailMasterViewModel.class);
-    }
+    private void displayRecipeData(RecipeResponse recipeResponse) {
+        if (recipeResponse != null) {
+            mRecipeStepDescriptionAdapter.setStepsData(recipeResponse.getSteps());
+            List<Ingredient> ingredients = recipeResponse.getIngredients();
 
-    private void observeRecipeResponse() {
-        mViewModel.getRecipeResponse().observe(this, new Observer<RecipeResponse>() {
-            @Override
-            public void onChanged(@Nullable RecipeResponse recipeResponse) {
-                if (recipeResponse != null) {
-                    mRecipeStepDescriptionAdapter.setStepsData(recipeResponse.getSteps());
-                    List<Ingredient> ingredients = recipeResponse.getIngredients();
+            StringBuilder sb = new StringBuilder();
+            String ingredientsListHeader = "Recipe Ingredients";
+            sb.append(ingredientsListHeader);
+            for (Ingredient ingredient : ingredients) {
+                String name = ingredient.getIngredient();
+                double quantity = ingredient.getQuantity();
+                String measure = ingredient.getMeasure();
 
-                    StringBuilder sb = new StringBuilder();
-                    String ingredientsListHeader = "Recipe Ingredients";
-                    sb.append(ingredientsListHeader);
-                    for (Ingredient ingredient : ingredients) {
-                        String name = ingredient.getIngredient();
-                        float quantity = ingredient.getQuantity();
-                        String measure = ingredient.getMeasure();
-
-                        sb.append("\n");
-                        sb.append(StringUtils.formatIngredient(mContext, name, quantity, measure));
-                    }
-
-                    TextViewUtils.setTextWithSpan(tvRecipeIngredients, sb.toString(), ingredientsListHeader,
-                            new StyleSpan(Typeface.BOLD));
-                }
+                sb.append("\n");
+                sb.append(StringUtils.formatIngredient(mContext, name, quantity, measure));
+                sb.append(StringUtils.formatIngredient(mContext, name, quantity, measure));
             }
-        });
+
+            TextViewUtils.setTextWithSpan(tvRecipeIngredients, sb.toString(), ingredientsListHeader,
+                    new StyleSpan(Typeface.BOLD));
+        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

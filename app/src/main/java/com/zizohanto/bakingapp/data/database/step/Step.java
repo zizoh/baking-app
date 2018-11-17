@@ -1,18 +1,13 @@
 
 package com.zizohanto.bakingapp.data.database.step;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "step")
-public class Step {
 
-    @PrimaryKey(autoGenerate = true)
-    private int roomId;
-
-    private int recipeId;
+public class Step implements Parcelable {
 
     @SerializedName("id")
     private Integer id;
@@ -29,20 +24,31 @@ public class Step {
     @SerializedName("thumbnailURL")
     private String thumbnailURL;
 
-    public int getRoomId() {
-        return roomId;
+    public static final Creator<Step> CREATOR = new Creator<Step>() {
+        @Override
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        @Override
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
+
+    protected Step(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        shortDescription = in.readString();
+        description = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
-    public int getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(int recipeId) {
-        this.recipeId = recipeId;
+    public Step() {
     }
 
     public Integer getId() {
@@ -85,4 +91,22 @@ public class Step {
         this.thumbnailURL = thumbnailURL;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(id);
+        }
+        parcel.writeString(shortDescription);
+        parcel.writeString(description);
+        parcel.writeString(videoURL);
+        parcel.writeString(thumbnailURL);
+    }
 }

@@ -26,13 +26,10 @@ public class RecipeStepDescriptionAdapter
         @Override
         public void onClick(View view) {
             Step step = (Step) view.getTag();
-            int stepId = step.getId();
-            int recipeId = step.getRecipeId();
 
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putInt(FragRecipeDetail.ARG_STEP_ID, stepId);
-                arguments.putInt(FragRecipeDetail.ARG_RECIPE_ID, recipeId);
+                arguments.putParcelable(FragRecipeDetail.ARG_STEP, step);
 
                 FragRecipeDetail fragment = new FragRecipeDetail();
                 fragment.setArguments(arguments);
@@ -42,8 +39,7 @@ public class RecipeStepDescriptionAdapter
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, ActDetailDetail.class);
-                intent.putExtra(FragRecipeDetail.ARG_STEP_ID, stepId);
-                intent.putExtra(FragRecipeDetail.ARG_RECIPE_ID, recipeId);
+                intent.putExtra(FragRecipeDetail.ARG_STEP, step);
 
                 context.startActivity(intent);
             }
