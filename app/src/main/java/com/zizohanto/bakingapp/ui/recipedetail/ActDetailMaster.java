@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -14,11 +16,10 @@ import android.widget.TextView;
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
-import com.zizohanto.bakingapp.data.utils.StringUtils;
-import com.zizohanto.bakingapp.data.utils.TextViewUtils;
 import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * An activity representing a list of Items. This activity
@@ -39,7 +40,6 @@ public class ActDetailMaster extends AppCompatActivity {
     private RecipeResponse mRecipeResponse;
     private RecipeStepDescriptionAdapter mRecipeStepDescriptionAdapter;
     private TextView tvRecipeIngredients;
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,6 @@ public class ActDetailMaster extends AppCompatActivity {
         toolbar.setTitle(getTitle());
 
         tvRecipeIngredients = (TextView) findViewById(R.id.tv_recipe_ingredients);
-        mContext = getBaseContext();
 
         if (getIntent().hasExtra(ActRecipes.EXTRA_RECIPE)) {
             mRecipeResponse = getIntent().getParcelableExtra(ActRecipes.EXTRA_RECIPE);
@@ -77,24 +76,46 @@ public class ActDetailMaster extends AppCompatActivity {
     private void displayRecipeData(RecipeResponse recipeResponse) {
         if (recipeResponse != null) {
             mRecipeStepDescriptionAdapter.setStepsData(recipeResponse.getSteps());
-            List<Ingredient> ingredients = recipeResponse.getIngredients();
 
+            Context context = getBaseContext();
+            String ingredientsListTitle = context.getString((R.string.ingredient_list_title));
             StringBuilder sb = new StringBuilder();
-            String ingredientsListHeader = "Recipe Ingredients";
-            sb.append(ingredientsListHeader);
+            sb.append(ingredientsListTitle);
+
+            List<Ingredient> ingredients = recipeResponse.getIngredients();
             for (Ingredient ingredient : ingredients) {
                 String name = ingredient.getIngredient();
                 double quantity = ingredient.getQuantity();
                 String measure = ingredient.getMeasure();
 
                 sb.append("\n");
-                sb.append(StringUtils.formatIngredient(mContext, name, quantity, measure));
-                sb.append(StringUtils.formatIngredient(mContext, name, quantity, measure));
+                sb.append(formatIngredient(context, name, quantity, measure));
             }
 
-            TextViewUtils.setTextWithSpan(tvRecipeIngredients, sb.toString(), ingredientsListHeader,
+            SpannableStringBuilder ssb = buildSpannableString(sb.toString(), ingredientsListTitle,
                     new StyleSpan(Typeface.BOLD));
+            tvRecipeIngredients.setText(ssb);
         }
+    }
+
+    public String formatIngredient(Context context, String name, double quantity, String measure) {
+
+        String line = context.getString(R.string.recipe_details_ingredient_line);
+
+        String quantityStr = String.format(Locale.US, "%s", quantity);
+        if (quantity == (long) quantity) {
+            quantityStr = String.format(Locale.US, "%d", (long) quantity);
+        }
+
+        return String.format(Locale.US, line, name, quantityStr, measure);
+    }
+
+    public SpannableStringBuilder buildSpannableString(String fullText, String styledText, StyleSpan style) {
+        SpannableStringBuilder sb = new SpannableStringBuilder(fullText);
+        int start = fullText.indexOf(styledText);
+        int end = start + styledText.length();
+        sb.setSpan(style, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return sb;
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
