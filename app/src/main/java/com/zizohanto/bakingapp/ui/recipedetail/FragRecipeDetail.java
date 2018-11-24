@@ -109,12 +109,13 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
         String videoUrl = mStep.getVideoURL();
         String thumbnail = mStep.getThumbnailURL();
         if (videoUrl.isEmpty()) {
-
-            Picasso.with(mContext)
-                    .load(thumbnail)
-                    .error(mContext.getResources().getDrawable(R.drawable.dummy_recipe_preview))
-                    .placeholder(mContext.getResources().getDrawable(R.drawable.dummy_recipe_preview))
-                    .into(mThumbnail);
+            if (!thumbnail.isEmpty()) {
+                Picasso.with(mContext)
+                        .load(thumbnail)
+                        .error(mContext.getResources().getDrawable(R.drawable.dummy_recipe_preview))
+                        .placeholder(mContext.getResources().getDrawable(R.drawable.dummy_recipe_preview))
+                        .into(mThumbnail);
+            }
 
             mThumbnail.setVisibility(View.VISIBLE);
             mPlayerView.setVisibility(View.GONE);

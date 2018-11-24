@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.zizohanto.bakingapp.R;
+import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
+import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -17,6 +19,8 @@ import com.zizohanto.bakingapp.R;
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailDetail extends AppCompatActivity {
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.RECIPE_RESPONSE";
+    private RecipeResponse mRecipeResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,9 @@ public class ActDetailDetail extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        if (getIntent().hasExtra(EXTRA_RECIPE)) {
+            mRecipeResponse = getIntent().getParcelableExtra(EXTRA_RECIPE);
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -64,7 +71,9 @@ public class ActDetailDetail extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, ActDetailMaster.class));
+            Intent intent = new Intent(this, ActDetailMaster.class);
+            intent.putExtra(ActRecipes.EXTRA_RECIPE, mRecipeResponse);
+            navigateUpTo(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

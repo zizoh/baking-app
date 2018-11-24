@@ -1,8 +1,5 @@
 package com.zizohanto.bakingapp.ui.recipedetail;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -20,36 +17,11 @@ import java.util.List;
 public class RecipeStepDescriptionAdapter
         extends RecyclerView.Adapter<RecipeStepDescriptionAdapter.ViewHolder> {
 
-    private final ActDetailMaster mParentActivity;
-    private final boolean mTwoPane;
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Step step = (Step) view.getTag();
-
-            if (mTwoPane) {
-                Bundle arguments = new Bundle();
-                arguments.putParcelable(FragRecipeDetail.ARG_STEP, step);
-
-                FragRecipeDetail fragment = new FragRecipeDetail();
-                fragment.setArguments(arguments);
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.item_detail_container, fragment)
-                        .commit();
-            } else {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, ActDetailDetail.class);
-                intent.putExtra(FragRecipeDetail.ARG_STEP, step);
-
-                context.startActivity(intent);
-            }
-        }
-    };
+    private StepClickListener mOnClickListener;
     private List<Step> mRecipeSteps;
 
-    RecipeStepDescriptionAdapter(ActDetailMaster parent, boolean twoPane) {
-        mParentActivity = parent;
-        mTwoPane = twoPane;
+    RecipeStepDescriptionAdapter(StepClickListener listener) {
+        mOnClickListener = listener;
     }
 
     void setStepsData(List<Step> newSteps) {
@@ -99,9 +71,6 @@ public class RecipeStepDescriptionAdapter
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mIdView.setText(mRecipeSteps.get(position).getShortDescription());
-
-        holder.itemView.setTag(mRecipeSteps.get(position));
-        holder.itemView.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -110,12 +79,23 @@ public class RecipeStepDescriptionAdapter
         return mRecipeSteps.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mIdView;
+    public interface StepClickListener {
+        void onStepClick(Step clickedStep);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView mIdView;
 
         ViewHolder(View view) {
             super(view);
             mIdView = (TextView) view.findViewById(R.id.tv_step_short_desc);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onStepClick(mRecipeSteps.get(clickedPosition));
         }
     }
 }

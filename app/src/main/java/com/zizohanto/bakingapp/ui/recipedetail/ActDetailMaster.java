@@ -1,9 +1,11 @@
 package com.zizohanto.bakingapp.ui.recipedetail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
+import com.zizohanto.bakingapp.data.database.step.Step;
 import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
 
 import java.util.List;
@@ -30,7 +33,8 @@ import java.util.Locale;
  * item details side-by-side using two vertical panes.
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
-public class ActDetailMaster extends AppCompatActivity {
+public class ActDetailMaster extends AppCompatActivity implements RecipeStepDescriptionAdapter.StepClickListener {
+    private static final int REQUEST_RECIPE_RESPONSE = 1;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -64,7 +68,7 @@ public class ActDetailMaster extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        mRecipeStepDescriptionAdapter = new RecipeStepDescriptionAdapter(this, mTwoPane);
+        mRecipeStepDescriptionAdapter = new RecipeStepDescriptionAdapter(this);
 
         displayRecipeData(mRecipeResponse);
 
@@ -122,4 +126,32 @@ public class ActDetailMaster extends AppCompatActivity {
         recyclerView.setAdapter(mRecipeStepDescriptionAdapter);
     }
 
+    @Override
+    public void onStepClick(Step clickedStep) {
+
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(FragRecipeDetail.ARG_STEP, clickedStep);
+
+            FragRecipeDetail fragment = new FragRecipeDetail();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, ActDetailDetail.class);
+            intent.putExtra(FragRecipeDetail.ARG_STEP, clickedStep);
+            intent.putExtra(ActDetailDetail.EXTRA_RECIPE, mRecipeResponse);
+
+            startActivityForResult(intent, REQUEST_RECIPE_RESPONSE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_RECIPE_RESPONSE && resultCode == RESULT_OK) {
+            mRecipeResponse = getIntent().getParcelableExtra(ActDetailDetail.EXTRA_RECIPE);
+            displayRecipeData(mRecipeResponse);
+        }
+    }
 }
