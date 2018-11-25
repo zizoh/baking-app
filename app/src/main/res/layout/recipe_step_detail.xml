@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/playerview_height"
         app:default_artwork="@drawable/dummy_recipe_preview"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalHalf"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_half"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,7 +19,7 @@
         app:use_artwork="true" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/horizontalHalf"
+        android:id="@+id/horizontal_half"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -34,7 +34,7 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/video_thumbnail"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalHalf"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_half"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:src="@drawable/dummy_recipe_preview"
@@ -48,6 +48,6 @@
         android:textIsSelectable="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontalHalf"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_half"
         tools:text="@string/step_description_sample" />
 </android.support.constraint.ConstraintLayout>

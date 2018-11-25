@@ -5,8 +5,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +70,7 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
             mStep = getArguments().getParcelable(ActDetailMaster.ARG_STEP);
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.detail_toolbar);
             if (appBarLayout != null && mStep != null) {
                 appBarLayout.setTitle(String.valueOf(mStep.getId()));
             }

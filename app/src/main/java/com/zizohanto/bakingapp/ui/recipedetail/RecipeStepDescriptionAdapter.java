@@ -80,7 +80,7 @@ public class RecipeStepDescriptionAdapter
     }
 
     public interface StepClickListener {
-        void onStepClick(Step clickedStep);
+        void onStepClick(Step clickedStep, int clickedStepPosition);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -94,8 +94,8 @@ public class RecipeStepDescriptionAdapter
 
         @Override
         public void onClick(View view) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onStepClick(mRecipeSteps.get(clickedPosition));
+            int clickedStepPosition = getAdapterPosition();
+            mOnClickListener.onStepClick(mRecipeSteps.get(clickedStepPosition), clickedStepPosition);
         }
     }
 }

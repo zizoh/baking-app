@@ -35,7 +35,8 @@ import java.util.Locale;
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailMaster extends AppCompatActivity implements RecipeStepDescriptionAdapter.StepClickListener {
     public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.ARG_STEP";
-    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.RECIPE";
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.EXTRA_RECIPE";
+    public static final String EXTRA_CLICKED_STEP_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.CLICKED_STEP_POSITION";
 
     private static final int REQUEST_RECIPE_RESPONSE = 1;
 
@@ -131,7 +132,7 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
     }
 
     @Override
-    public void onStepClick(Step clickedStep) {
+    public void onStepClick(Step clickedStep, int clickedStepPosition) {
 
         if (mTwoPane) {
             Bundle arguments = new Bundle();
@@ -144,8 +145,8 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
                     .commit();
         } else {
             Intent intent = new Intent(this, ActDetailDetail.class);
-            intent.putExtra(ARG_STEP, clickedStep);
             intent.putExtra(EXTRA_RECIPE, mRecipeResponse);
+            intent.putExtra(EXTRA_CLICKED_STEP_POSITION, clickedStepPosition);
 
             startActivityForResult(intent, REQUEST_RECIPE_RESPONSE);
         }
