@@ -11,6 +11,8 @@ import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
 
+import static com.zizohanto.bakingapp.ui.recipedetail.ActDetailMaster.EXTRA_RECIPE;
+
 /**
  * An activity representing a single Item detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
@@ -19,7 +21,6 @@ import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailDetail extends AppCompatActivity {
-    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.RECIPE_RESPONSE";
     private RecipeResponse mRecipeResponse;
 
     @Override
@@ -51,8 +52,8 @@ public class ActDetailDetail extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putParcelable(FragRecipeDetail.ARG_STEP,
-                    getIntent().getParcelableExtra(FragRecipeDetail.ARG_STEP));
+            arguments.putParcelable(ActDetailMaster.ARG_STEP,
+                    getIntent().getParcelableExtra(ActDetailMaster.ARG_STEP));
             FragRecipeDetail fragment = new FragRecipeDetail();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

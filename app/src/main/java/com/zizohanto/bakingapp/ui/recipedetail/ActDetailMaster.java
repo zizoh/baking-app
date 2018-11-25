@@ -34,6 +34,9 @@ import java.util.Locale;
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailMaster extends AppCompatActivity implements RecipeStepDescriptionAdapter.StepClickListener {
+    public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.ARG_STEP";
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.RECIPE";
+
     private static final int REQUEST_RECIPE_RESPONSE = 1;
 
     /**
@@ -52,6 +55,7 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // TODO: Rename Activity title. Remove label tag in Activity's label tag in Manifest
         toolbar.setTitle(getTitle());
 
         tvRecipeIngredients = (TextView) findViewById(R.id.tv_recipe_ingredients);
@@ -131,7 +135,7 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
         if (mTwoPane) {
             Bundle arguments = new Bundle();
-            arguments.putParcelable(FragRecipeDetail.ARG_STEP, clickedStep);
+            arguments.putParcelable(ARG_STEP, clickedStep);
 
             FragRecipeDetail fragment = new FragRecipeDetail();
             fragment.setArguments(arguments);
@@ -140,8 +144,8 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
                     .commit();
         } else {
             Intent intent = new Intent(this, ActDetailDetail.class);
-            intent.putExtra(FragRecipeDetail.ARG_STEP, clickedStep);
-            intent.putExtra(ActDetailDetail.EXTRA_RECIPE, mRecipeResponse);
+            intent.putExtra(ARG_STEP, clickedStep);
+            intent.putExtra(EXTRA_RECIPE, mRecipeResponse);
 
             startActivityForResult(intent, REQUEST_RECIPE_RESPONSE);
         }
@@ -150,7 +154,7 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_RECIPE_RESPONSE && resultCode == RESULT_OK) {
-            mRecipeResponse = getIntent().getParcelableExtra(ActDetailDetail.EXTRA_RECIPE);
+            mRecipeResponse = getIntent().getParcelableExtra(EXTRA_RECIPE);
             displayRecipeData(mRecipeResponse);
         }
     }

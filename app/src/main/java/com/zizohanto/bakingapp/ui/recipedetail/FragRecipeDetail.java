@@ -42,8 +42,6 @@ import com.zizohanto.bakingapp.data.database.step.Step;
 @SuppressWarnings("RedundantCast")
 public class FragRecipeDetail extends Fragment implements Player.EventListener {
 
-    public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.ARG_STEP";
-
     private Step mStep;
 
     private TextView mStepShortDescription;
@@ -68,8 +66,8 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
 
         mContext = getContext();
 
-        if (getArguments().containsKey(ARG_STEP)) {
-            mStep = getArguments().getParcelable(ARG_STEP);
+        if (getArguments().containsKey(ActDetailMaster.ARG_STEP)) {
+            mStep = getArguments().getParcelable(ActDetailMaster.ARG_STEP);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
