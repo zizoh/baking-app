@@ -13,4 +13,13 @@
     <string name="play">Play</string>
     <string name="restart">Restart</string>
     <string name="video_thumbnail">Video Thumbnail</string>
+    <string name="add_widget">Add widget</string>
+    <string name="appwidget_text">Recipe Ingredient</string>
+
+    <!-- Key name for storing recipe id in SharedPreferences -->
+    <string name="pref_key_recipe_id" translatable="false">Recipe Id</string>
+
+    <!-- Default for recipe id preference -->
+    <string name="pref_recipe_id_default" translatable="false">1</string>
+    <string name="show_in_widget">Show in Widget</string>
 </resources>

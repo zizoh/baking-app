@@ -23,7 +23,13 @@ import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailDetail extends FragmentActivity {
+
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.extra_recipe";
+    public static final String EXTRA_CLICKED_STEP_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.clicked_step_position";
+
     private RecipeResponse mRecipeResponse;
+
+    // TODO: Save the state of mClickedStepPosition and mNumberOfSteps
     private int mClickedStepPosition;
     private int mNumberOfSteps;
     private ViewPager mPager;
@@ -41,10 +47,9 @@ public class ActDetailDetail extends FragmentActivity {
 //        if (actionBar != null) {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
-        if (getIntent().hasExtra(ActDetailMaster.EXTRA_RECIPE)) {
-            mRecipeResponse = getIntent().getParcelableExtra(ActDetailMaster.EXTRA_RECIPE);
-            mClickedStepPosition = getIntent().getIntExtra(ActDetailMaster.EXTRA_CLICKED_STEP_POSITION, 0);
-            mNumberOfSteps = mRecipeResponse.getSteps().size();
+        if (getIntent().hasExtra(EXTRA_RECIPE) && getIntent().hasExtra(EXTRA_CLICKED_STEP_POSITION)) {
+            mRecipeResponse = getIntent().getParcelableExtra(EXTRA_RECIPE);
+            mClickedStepPosition = getIntent().getIntExtra(EXTRA_CLICKED_STEP_POSITION, 0);
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -59,6 +64,8 @@ public class ActDetailDetail extends FragmentActivity {
         if (savedInstanceState == null) {
             mPager = (ViewPager) findViewById(R.id.pager);
 
+            // Get the number of Steps so that the adapter will know how many pages it will be displaying
+            mNumberOfSteps = mRecipeResponse.getSteps().size();
             mPagerAdapter = new StepSlidePagerAdapter(getSupportFragmentManager());
             mPager.setAdapter(mPagerAdapter);
             mPager.setCurrentItem(mClickedStepPosition);
@@ -98,14 +105,13 @@ public class ActDetailDetail extends FragmentActivity {
 
     private class StepSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        public StepSlidePagerAdapter(FragmentManager fm) {
+        StepSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
+            // Create the detail fragment and return it to the activity
             Bundle arguments = new Bundle();
             arguments.putParcelable(ActDetailMaster.ARG_STEP, mRecipeResponse.getSteps().get(position));
 

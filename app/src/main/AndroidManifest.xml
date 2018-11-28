@@ -22,7 +22,7 @@
         <activity
             android:name=".ui.recipedetail.ActDetailMaster"
             android:label="@string/title_item_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.recipedetail.ActDetailDetail"
             android:label="@string/title_item_detail"
@@ -36,6 +36,18 @@
         <service
             android:name=".data.network.BakingAppSyncIntentService"
             android:exported="false" />
+
+        <receiver android:name=".IngredientWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredient_widget_info" />
+        </receiver>
+
+        <service android:name=".IngredientWidgetService" />
     </application>
 
 </manifest>

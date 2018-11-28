@@ -2,27 +2,30 @@ package com.zizohanto.bakingapp.ui.recipedetail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zizohanto.bakingapp.IngredientWidgetProvider;
+import com.zizohanto.bakingapp.IngredientWidgetService;
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.database.step.Step;
-import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
+import com.zizohanto.bakingapp.ui.utils.StringUtils;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * An activity representing a list of Items. This activity
@@ -34,9 +37,8 @@ import java.util.Locale;
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailMaster extends AppCompatActivity implements RecipeStepDescriptionAdapter.StepClickListener {
-    public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.ARG_STEP";
-    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.EXTRA_RECIPE";
-    public static final String EXTRA_CLICKED_STEP_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.CLICKED_STEP_POSITION";
+    public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.arg_step";
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.extra_recipe";
 
     private static final int REQUEST_RECIPE_RESPONSE = 1;
 
@@ -45,9 +47,10 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
      * device.
      */
     private boolean mTwoPane;
-    private RecipeResponse mRecipeResponse;
+    private RecipeResponse mRecipe;
     private RecipeStepDescriptionAdapter mRecipeStepDescriptionAdapter;
     private TextView tvRecipeIngredients;
+    private SharedPreferences mSharedPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +64,8 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
         tvRecipeIngredients = (TextView) findViewById(R.id.tv_recipe_ingredients);
 
-        if (getIntent().hasExtra(ActRecipes.EXTRA_RECIPE)) {
-            mRecipeResponse = getIntent().getParcelableExtra(ActRecipes.EXTRA_RECIPE);
+        if (getIntent().hasExtra(EXTRA_RECIPE)) {
+            mRecipe = getIntent().getParcelableExtra(EXTRA_RECIPE);
         }
 
         if (findViewById(R.id.item_detail_container) != null) {
@@ -75,11 +78,12 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
         mRecipeStepDescriptionAdapter = new RecipeStepDescriptionAdapter(this);
 
-        displayRecipeData(mRecipeResponse);
+        displayRecipeData(mRecipe);
 
         View recyclerView = findViewById(R.id.rv_step_description);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+        setupSharedPreferences();
     }
 
     private void displayRecipeData(RecipeResponse recipeResponse) {
@@ -88,47 +92,21 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
             Context context = getBaseContext();
             String ingredientsListTitle = context.getString((R.string.ingredient_list_title));
-            StringBuilder sb = new StringBuilder();
-            sb.append(ingredientsListTitle);
 
             List<Ingredient> ingredients = recipeResponse.getIngredients();
-            for (Ingredient ingredient : ingredients) {
-                String name = ingredient.getIngredient();
-                double quantity = ingredient.getQuantity();
-                String measure = ingredient.getMeasure();
 
-                sb.append("\n");
-                sb.append(formatIngredient(context, name, quantity, measure));
-            }
+            SpannableStringBuilder ssb = StringUtils.formatIngredientForTextViewDisplay(context, ingredientsListTitle, ingredients);
 
-            SpannableStringBuilder ssb = buildSpannableString(sb.toString(), ingredientsListTitle,
-                    new StyleSpan(Typeface.BOLD));
             tvRecipeIngredients.setText(ssb);
         }
     }
 
-    public String formatIngredient(Context context, String name, double quantity, String measure) {
-
-        String line = context.getString(R.string.recipe_details_ingredient_line);
-
-        String quantityStr = String.format(Locale.US, "%s", quantity);
-        if (quantity == (long) quantity) {
-            quantityStr = String.format(Locale.US, "%d", (long) quantity);
-        }
-
-        return String.format(Locale.US, line, name, quantityStr, measure);
-    }
-
-    public SpannableStringBuilder buildSpannableString(String fullText, String styledText, StyleSpan style) {
-        SpannableStringBuilder sb = new SpannableStringBuilder(fullText);
-        int start = fullText.indexOf(styledText);
-        int end = start + styledText.length();
-        sb.setSpan(style, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return sb;
-    }
-
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(mRecipeStepDescriptionAdapter);
+    }
+
+    private void setupSharedPreferences() {
+        mSharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -145,18 +123,43 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
                     .commit();
         } else {
             Intent intent = new Intent(this, ActDetailDetail.class);
-            intent.putExtra(EXTRA_RECIPE, mRecipeResponse);
-            intent.putExtra(EXTRA_CLICKED_STEP_POSITION, clickedStepPosition);
+            intent.putExtra(ActDetailDetail.EXTRA_RECIPE, mRecipe);
+            intent.putExtra(ActDetailDetail.EXTRA_CLICKED_STEP_POSITION, clickedStepPosition);
 
             startActivityForResult(intent, REQUEST_RECIPE_RESPONSE);
         }
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.act_detail_master_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.widget_menu) {
+            saveToPref();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveToPref() {
+        SharedPreferences.Editor editor = mSharedPreference.edit();
+        editor.putInt(getString(R.string.pref_key_recipe_id), mRecipe.getId());
+        editor.apply();
+
+        IngredientWidgetProvider.updateIngredientWidgets(this, mRecipe);
+        IngredientWidgetService.startActionUpdateIngredientWidget(this);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_RECIPE_RESPONSE && resultCode == RESULT_OK) {
-            mRecipeResponse = getIntent().getParcelableExtra(EXTRA_RECIPE);
-            displayRecipeData(mRecipeResponse);
+            mRecipe = getIntent().getParcelableExtra(EXTRA_RECIPE);
+            displayRecipeData(mRecipe);
         }
     }
 }

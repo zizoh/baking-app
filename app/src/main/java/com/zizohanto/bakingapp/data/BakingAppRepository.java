@@ -18,7 +18,7 @@ import timber.log.Timber;
  * Handles data operations in BakingApp. Acts as a mediator between {@link NetworkDataSource}
  * and {@link RecipeDao}
  */
-@SuppressWarnings("Convert2Lambda")
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef"})
 public class BakingAppRepository {
 
     // For Singleton instantiation
@@ -115,5 +115,9 @@ public class BakingAppRepository {
     public LiveData<List<RecipeResponse>> getRecipes() {
         initializeData();
         return mRecipeDao.getAllRecipes();
+    }
+
+    public RecipeResponse getRecipeWithId(int recipeId) {
+        return mRecipeDao.getRecipeWithId(recipeId);
     }
 }
