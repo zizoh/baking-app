@@ -14,8 +14,8 @@ import android.widget.RemoteViews;
 
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
+import com.zizohanto.bakingapp.data.utils.StringUtils;
 import com.zizohanto.bakingapp.ui.recipedetail.ActDetailMaster;
-import com.zizohanto.bakingapp.ui.utils.StringUtils;
 
 import java.util.List;
 

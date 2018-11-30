@@ -1,5 +1,7 @@
 package com.zizohanto.bakingapp.ui.recipedetail;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +25,8 @@ import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.database.step.Step;
-import com.zizohanto.bakingapp.ui.utils.StringUtils;
+import com.zizohanto.bakingapp.data.utils.InjectorUtils;
+import com.zizohanto.bakingapp.data.utils.StringUtils;
 
 import java.util.List;
 
@@ -38,7 +41,8 @@ import java.util.List;
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailMaster extends AppCompatActivity implements RecipeStepDescriptionAdapter.StepClickListener {
     public static final String ARG_STEP = "com.zizohanto.bakingapp.ui.recipedetail.arg_step";
-    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.extra_recipe";
+    public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.EXTRA_RECIPE";
+    public static final String EXTRA_RECIPE_ID = "com.zizohanto.bakingapp.ui.recipedetail.EXTRA_RECIPE_ID";
 
     private static final int REQUEST_RECIPE_RESPONSE = 1;
 
@@ -47,10 +51,12 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
      * device.
      */
     private boolean mTwoPane;
+    RecipeDetailViewModel mViewModel;
     private RecipeResponse mRecipe;
     private RecipeStepDescriptionAdapter mRecipeStepDescriptionAdapter;
     private TextView tvRecipeIngredients;
     private SharedPreferences mSharedPreference;
+    private int mRecipeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +70,8 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
         tvRecipeIngredients = (TextView) findViewById(R.id.tv_recipe_ingredients);
 
-        if (getIntent().hasExtra(EXTRA_RECIPE)) {
-            mRecipe = getIntent().getParcelableExtra(EXTRA_RECIPE);
+        if (getIntent() != null) {
+            mRecipeId = getIntent().getIntExtra(EXTRA_RECIPE_ID, 0);
         }
 
         if (findViewById(R.id.item_detail_container) != null) {
@@ -78,12 +84,31 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
 
         mRecipeStepDescriptionAdapter = new RecipeStepDescriptionAdapter(this);
 
-        displayRecipeData(mRecipe);
+        setupViewModel();
+        getRecipe();
 
         View recyclerView = findViewById(R.id.rv_step_description);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
         setupSharedPreferences();
+    }
+
+    private void setupViewModel() {
+        ActDetailMasterViewModelFactory factory =
+                InjectorUtils.provideADMViewModelFactory(this, mRecipeId);
+        mViewModel = ViewModelProviders.of(this, factory).get(RecipeDetailViewModel.class);
+    }
+
+    private void getRecipe() {
+        mViewModel.getRecipe().observe(this, new Observer<RecipeResponse>() {
+            @Override
+            public void onChanged(@Nullable RecipeResponse recipeResponse) {
+                if (recipeResponse != null) {
+                    mRecipe = recipeResponse;
+                    displayRecipeData(mRecipe);
+                }
+            }
+        });
     }
 
     private void displayRecipeData(RecipeResponse recipeResponse) {

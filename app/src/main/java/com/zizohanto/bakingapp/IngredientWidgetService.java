@@ -51,7 +51,6 @@ public class IngredientWidgetService extends IntentService {
                 context.startService(intent);
             }
         });
-
     }
 
     @Override

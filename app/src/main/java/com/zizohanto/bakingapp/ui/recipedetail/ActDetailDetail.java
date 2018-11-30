@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
-import com.zizohanto.bakingapp.ui.recipes.ActRecipes;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -84,7 +83,7 @@ public class ActDetailDetail extends FragmentActivity {
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
             Intent intent = new Intent(this, ActDetailMaster.class);
-            intent.putExtra(ActRecipes.EXTRA_RECIPE, mRecipeResponse);
+            intent.putExtra(ActDetailMaster.EXTRA_RECIPE, mRecipeResponse);
             navigateUpTo(intent);
             return true;
         }

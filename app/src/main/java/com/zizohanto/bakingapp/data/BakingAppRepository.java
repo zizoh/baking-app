@@ -120,4 +120,8 @@ public class BakingAppRepository {
     public RecipeResponse getRecipeWithId(int recipeId) {
         return mRecipeDao.getRecipeWithId(recipeId);
     }
+
+    public LiveData<RecipeResponse> getLiveDataRecipeWithId(int recipeId) {
+        return mRecipeDao.getLiveDataRecipeWithId(recipeId);
+    }
 }

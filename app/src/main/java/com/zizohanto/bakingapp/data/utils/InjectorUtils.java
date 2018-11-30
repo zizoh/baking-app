@@ -6,6 +6,7 @@ import com.zizohanto.bakingapp.AppExecutors;
 import com.zizohanto.bakingapp.data.BakingAppRepository;
 import com.zizohanto.bakingapp.data.database.BakingAppDatabase;
 import com.zizohanto.bakingapp.data.network.NetworkDataSource;
+import com.zizohanto.bakingapp.ui.recipedetail.ActDetailMasterViewModelFactory;
 import com.zizohanto.bakingapp.ui.recipes.ActRecipesViewModelFactory;
 
 /**
@@ -26,8 +27,13 @@ public class InjectorUtils {
         return NetworkDataSource.getInstance(context.getApplicationContext(), executors);
     }
 
-    public static ActRecipesViewModelFactory provideRAViewModelFactory(Context context) {
+    public static ActRecipesViewModelFactory provideARViewModelFactory(Context context) {
         BakingAppRepository repository = provideRepository(context);
         return new ActRecipesViewModelFactory(repository);
+    }
+
+    public static ActDetailMasterViewModelFactory provideADMViewModelFactory(Context context, int recipeId) {
+        BakingAppRepository repository = provideRepository(context);
+        return new ActDetailMasterViewModelFactory(repository, recipeId);
     }
 }

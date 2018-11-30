@@ -1,4 +1,4 @@
-package com.zizohanto.bakingapp.ui.utils;
+package com.zizohanto.bakingapp.data.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
