@@ -2,13 +2,13 @@ package com.zizohanto.bakingapp.ui.recipedetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.zizohanto.bakingapp.R;
@@ -22,13 +22,14 @@ import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
 public class ActDetailDetail extends FragmentActivity {
-
+    public static final String KEY_CLICKED_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.key_clickec_position";
+    public static final String KEY_NUMBER_OF_STEPS = "com.zizohanto.bakingapp.ui.recipedetail.key_number_of_steps";
+    public static final String KEY_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.key_recipe";
     public static final String EXTRA_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.extra_recipe";
     public static final String EXTRA_CLICKED_STEP_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.clicked_step_position";
 
     private RecipeResponse mRecipeResponse;
 
-    // TODO: Save the state of mClickedStepPosition and mNumberOfSteps
     private int mClickedStepPosition;
     private int mNumberOfSteps;
     private ViewPager mPager;
@@ -38,37 +39,24 @@ public class ActDetailDetail extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_detail_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-//        setSupportActionBar(toolbar);
 
-        // Show the Up button in the action bar.
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
         if (getIntent().hasExtra(EXTRA_RECIPE) && getIntent().hasExtra(EXTRA_CLICKED_STEP_POSITION)) {
             mRecipeResponse = getIntent().getParcelableExtra(EXTRA_RECIPE);
             mClickedStepPosition = getIntent().getIntExtra(EXTRA_CLICKED_STEP_POSITION, 0);
         }
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        if (savedInstanceState == null) {
-            mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = (ViewPager) findViewById(R.id.pager);
 
-            // Get the number of Steps so that the adapter will know how many pages it will be displaying
-            mNumberOfSteps = mRecipeResponse.getSteps().size();
-            mPagerAdapter = new StepSlidePagerAdapter(getSupportFragmentManager());
-            mPager.setAdapter(mPagerAdapter);
-            mPager.setCurrentItem(mClickedStepPosition);
+        // Get the number of Steps so that the adapter will know how many pages it will be displaying
+        mNumberOfSteps = mRecipeResponse.getSteps().size();
+        mPagerAdapter = new StepSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setCurrentItem(mClickedStepPosition);
 
+        if (savedInstanceState != null) {
+            mClickedStepPosition = savedInstanceState.getInt(KEY_CLICKED_POSITION);
+            mNumberOfSteps = savedInstanceState.getInt(KEY_NUMBER_OF_STEPS);
+            mRecipeResponse = savedInstanceState.getParcelable(KEY_RECIPE);
         }
     }
 
@@ -83,24 +71,20 @@ public class ActDetailDetail extends FragmentActivity {
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
             Intent intent = new Intent(this, ActDetailMaster.class);
-            intent.putExtra(ActDetailMaster.EXTRA_RECIPE, mRecipeResponse);
+            intent.putExtra(ActDetailMaster.EXTRA_RECIPE_ID, mRecipeResponse.getId());
             navigateUpTo(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onBackPressed() {
-////        if (mPager.getCurrentItem() == 0) {
-////            // If the user is currently looking at the first step, allow the system to handle the
-////            // Back button. This calls finish() on this activity and pops the back stack.
-////            super.onBackPressed();
-////        } else {
-////            // Otherwise, select the previous step.
-////            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-////        }
-//    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(KEY_CLICKED_POSITION, mClickedStepPosition);
+        outState.putInt(KEY_NUMBER_OF_STEPS, mNumberOfSteps);
+        outState.putParcelable(KEY_RECIPE, mRecipeResponse);
+        super.onSaveInstanceState(outState);
+    }
 
     private class StepSlidePagerAdapter extends FragmentStatePagerAdapter {
 

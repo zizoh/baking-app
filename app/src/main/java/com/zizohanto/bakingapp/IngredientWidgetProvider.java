@@ -28,7 +28,7 @@ public class IngredientWidgetProvider extends AppWidgetProvider {
                                 int appWidgetId, RecipeResponse recipe) {
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredient_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_ingredient);
 
         String recipeName = recipe.getName();
         List<Ingredient> ingredients = recipe.getIngredients();

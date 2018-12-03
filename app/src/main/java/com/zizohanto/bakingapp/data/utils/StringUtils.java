@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class StringUtils {
 
-    private static String formatIngredient(Context context, String name, double quantity, String measure) {
+    public static String formatIngredient(Context context, String name, double quantity, String measure) {
 
         String line = context.getString(R.string.recipe_details_ingredient_line);
 
@@ -50,4 +50,5 @@ public class StringUtils {
         return buildSpannableString(sb.toString(), textViewTitle,
                 new StyleSpan(Typeface.BOLD));
     }
+
 }

@@ -6,8 +6,10 @@
     android:name="com.zizohanto.bakingapp.ui.ItemListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginStart="@dimen/rv_step_description_margin_left"
+    android:layout_marginLeft="@dimen/rv_step_description_margin_left"
+    android:layout_marginEnd="@dimen/rv_step_description_margin_right"
+    android:layout_marginRight="@dimen/rv_step_description_margin_right"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.recipedetail.ActDetailMaster"
-    tools:listitem="@layout/detail_master_list_content" />
+    tools:listitem="@layout/step_list_item" />

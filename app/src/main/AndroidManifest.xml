@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zizohanto.bakingapp">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -21,11 +22,9 @@
         </activity>
         <activity
             android:name=".ui.recipedetail.ActDetailMaster"
-            android:label="@string/title_item_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.recipedetail.ActDetailDetail"
-            android:label="@string/title_item_detail"
             android:parentActivityName=".ui.recipedetail.ActDetailMaster"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

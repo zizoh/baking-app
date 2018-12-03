@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginStart="@dimen/ll_item_list_margin_left"
+    android:layout_marginLeft="@dimen/ll_item_list_margin_left"
+    android:layout_marginEnd="@dimen/ll_item_list_margin_right"
+    android:layout_marginRight="@dimen/ll_item_list_margin_right"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -24,11 +26,13 @@
         android:name="com.zizohanto.bakingapp.ui.ItemListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginStart="@dimen/rv_step_description_margin_left"
+        android:layout_marginLeft="@dimen/rv_step_description_margin_left"
+        android:layout_marginEnd="@dimen/rv_step_description_margin_right"
+        android:layout_marginRight="@dimen/rv_step_description_margin_right"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.zizohanto.bakingapp.ui.recipedetail.ActDetailMaster"
-        tools:listitem="@layout/detail_master_list_content" />
+        tools:listitem="@layout/step_list_item" />
 
     <FrameLayout
         android:id="@+id/item_detail_container"

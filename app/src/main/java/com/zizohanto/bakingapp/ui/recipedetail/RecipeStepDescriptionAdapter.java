@@ -17,6 +17,7 @@ import java.util.List;
 public class RecipeStepDescriptionAdapter
         extends RecyclerView.Adapter<RecipeStepDescriptionAdapter.ViewHolder> {
 
+    private int mSelectedPos = RecyclerView.NO_POSITION;
     private StepClickListener mOnClickListener;
     private List<Step> mRecipeSteps;
 
@@ -64,13 +65,14 @@ public class RecipeStepDescriptionAdapter
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.detail_master_list_content, parent, false);
+                .inflate(R.layout.step_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mIdView.setText(mRecipeSteps.get(position).getShortDescription());
+        holder.itemView.setSelected(mSelectedPos == position);
     }
 
     @Override
@@ -94,6 +96,10 @@ public class RecipeStepDescriptionAdapter
 
         @Override
         public void onClick(View view) {
+            notifyItemChanged(mSelectedPos);
+            mSelectedPos = getLayoutPosition();
+            notifyItemChanged(mSelectedPos);
+
             int clickedStepPosition = getAdapterPosition();
             mOnClickListener.onStepClick(mRecipeSteps.get(clickedStepPosition), clickedStepPosition);
         }

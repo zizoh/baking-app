@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".ui.recipedetail.FragRecipeDetail">
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:controller_layout_id="@layout/exo_playback_control_view"
+        app:default_artwork="@drawable/dummy_recipe_preview"
+        app:show_timeout="0"
+        app:use_artwork="true" />
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/video_thumbnail"
+        android:scaleType="centerCrop"
+        android:src="@drawable/dummy_recipe_preview"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/step_description"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textColor="@android:color/black"
+        android:textIsSelectable="true"
+        android:textSize="18sp"
+        tools:text="@string/step_description_sample" />
+</LinearLayout>

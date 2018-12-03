@@ -32,17 +32,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginLeft="@dimen/cv_recipe_ingredient_margin_left"
+            android:layout_marginRight="@dimen/cv_recipe_ingredient_margin_right"
+            android:layout_marginBottom="@dimen/cv_recipe_ingredient_margin_bottom">
 
             <TextView
                 android:id="@+id/tv_recipe_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="4dp"
-                android:text="Recipe Ingredients" />
+                android:padding="@dimen/tv_recipe_ingredients_padding"
+                tools:text="@string/recipe_ingredient" />
 
         </android.support.v7.widget.CardView>
 

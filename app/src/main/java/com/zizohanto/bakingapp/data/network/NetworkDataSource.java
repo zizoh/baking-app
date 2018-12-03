@@ -32,13 +32,13 @@ public class NetworkDataSource {
     // LiveData storing the downloaded recipes data
     private final MutableLiveData<List<RecipeResponse>> mDownloadedRecipes;
 
-    private final MutableLiveData<NetworkState> networkState;
+    private final MutableLiveData<NetworkState> mNetworkState;
 
     private NetworkDataSource(@NonNull Context context, AppExecutors executors) {
         mContext = context;
         mExecutors = executors;
         mDownloadedRecipes = new MutableLiveData<>();
-        networkState = new MutableLiveData<>();
+        mNetworkState = new MutableLiveData<>();
     }
 
     /**
@@ -60,7 +60,7 @@ public class NetworkDataSource {
     }
 
     public MutableLiveData<NetworkState> getNetworkState() {
-        return networkState;
+        return mNetworkState;
     }
 
     /**
@@ -79,7 +79,7 @@ public class NetworkDataSource {
         mExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                networkState.postValue(NetworkState.LOADING);
+                mNetworkState.postValue(NetworkState.LOADING);
 
                 ApiInterface apiService = ApiClient.getClient();
                 Call<List<RecipeResponse>> call = apiService.getRecipes();
@@ -90,17 +90,17 @@ public class NetworkDataSource {
                         if (response.isSuccessful()) {
                             Timber.d("Recipe received");
                             mDownloadedRecipes.postValue(response.body());
-                            networkState.postValue(NetworkState.LOADED);
+                            mNetworkState.postValue(NetworkState.LOADED);
                         } else {
                             Timber.d("%sUnknown error", String.valueOf(response.errorBody()));
-                            networkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
+                            mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, response.message()));
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<List<RecipeResponse>> call, @NonNull Throwable t) {
                         Timber.e(t.toString());
-                        networkState.postValue(new NetworkState(NetworkState.Status.FAILED, t.getMessage()));
+                        mNetworkState.postValue(new NetworkState(NetworkState.Status.FAILED, t.getMessage()));
                     }
                 });
             }

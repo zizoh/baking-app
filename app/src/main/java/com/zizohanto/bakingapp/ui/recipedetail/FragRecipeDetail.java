@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -41,10 +42,15 @@ import com.zizohanto.bakingapp.data.database.step.Step;
  */
 @SuppressWarnings("RedundantCast")
 public class FragRecipeDetail extends Fragment implements Player.EventListener {
+    private final static String KEY_PLAYBACK_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.key_playback_position";
+    private final static String KEY_CURRENT_WINDOW = "com.zizohanto.bakingapp.ui.recipedetail.key_current_window";
+    private final static String KEY_PLAY_WHEN_READY = "com.zizohanto.bakingapp.ui.recipedetail.key_play_when_ready";
+    private final static String KEY_STEP = "com.zizohanto.bakingapp.ui.recipedetail.key_step";
 
     private Step mStep;
 
     private TextView mStepShortDescription;
+    private Toolbar mToolbar;
     private SimpleExoPlayer mExoPlayer;
     private PlayerView mPlayerView;
     private ImageView mThumbnail;
@@ -70,19 +76,27 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
             mStep = getArguments().getParcelable(ActDetailMaster.ARG_STEP);
 
             Activity activity = this.getActivity();
-            Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.detail_toolbar);
-            if (appBarLayout != null && mStep != null) {
-                appBarLayout.setTitle(String.valueOf(mStep.getId()));
+            mToolbar = (Toolbar) activity.findViewById(R.id.detail_toolbar);
+
+            if (mToolbar != null && mStep != null) {
+                mToolbar.setTitle("Step Description");
             }
+        }
+
+        if (savedInstanceState != null) {
+            mStep = savedInstanceState.getParcelable(KEY_STEP);
+            mPlaybackPosition = savedInstanceState.getLong(KEY_PLAYBACK_POSITION);
+            mCurrentWindow = savedInstanceState.getInt(KEY_CURRENT_WINDOW);
+            mPlayWhenReady = savedInstanceState.getBoolean(KEY_PLAY_WHEN_READY);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recipe_step_detail, container, false);
+        View rootView = inflater.inflate(R.layout.step_detail, container, false);
 
-        mStepShortDescription = (TextView) rootView.findViewById(R.id.recipe_step_detail);
+        mStepShortDescription = (TextView) rootView.findViewById(R.id.step_description);
         mPlayerView = (PlayerView) rootView.findViewById(R.id.playerView);
         mThumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
 
@@ -97,7 +111,7 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
     }
 
     private void stepStepData(Step step) {
-        mStepShortDescription.setText(String.valueOf(step.getShortDescription()));
+        mStepShortDescription.setText(String.valueOf(step.getDescription()));
     }
 
     /**
@@ -186,6 +200,14 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putLong(KEY_PLAYBACK_POSITION, mPlaybackPosition);
+        outState.putInt(KEY_CURRENT_WINDOW, mCurrentWindow);
+        outState.putBoolean(KEY_PLAY_WHEN_READY, mPlayWhenReady);
+        outState.putParcelable(KEY_STEP, mStep);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
