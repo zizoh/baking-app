@@ -30,7 +30,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
                                                                     int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.recipes_list_content, parent, false);
+                .inflate(R.layout.recipes_list_item, parent, false);
 
         return new RecipeAdapterViewHolder(view);
 
@@ -89,13 +89,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
     public class RecipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mRecipeName;
-        private TextView mRecipeServings;
 
         private RecipeAdapterViewHolder(View itemView) {
             super(itemView);
 
             mRecipeName = itemView.findViewById(R.id.tv_recipe_name);
-            mRecipeServings = itemView.findViewById(R.id.tv_recipe_servings);
             itemView.setOnClickListener(this);
         }
 
@@ -107,7 +105,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
         void bind(RecipeResponse recipeResponse) {
             mRecipeName.setText(recipeResponse.getName());
-            mRecipeServings.setText(String.format("Servings: %s", String.valueOf(recipeResponse.getServings())));
         }
     }
 }

@@ -72,9 +72,9 @@ public class ActRecipes extends AppCompatActivity implements RecipeAdapter.Recip
 
     private GridLayoutManager getLayoutManager() {
         if (this.mRecyclerView.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            mLayoutManager = new GridLayoutManager(this, 2);
+            mLayoutManager = new GridLayoutManager(this, 1);
         } else if (this.mRecyclerView.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            mLayoutManager = new GridLayoutManager(this, 4);
+            mLayoutManager = new GridLayoutManager(this, 2);
         }
         return mLayoutManager;
     }
