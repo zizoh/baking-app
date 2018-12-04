@@ -5,6 +5,7 @@
     <dimen name="item_width">200dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="playerview_height">230dp</dimen>
+    <dimen name="video_frame_width">2dp</dimen>
 
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_min_width">160dp</dimen>

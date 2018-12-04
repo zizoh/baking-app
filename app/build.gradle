@@ -33,7 +33,11 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
 
     // exo player
-    implementation "com.google.android.exoplayer:exoplayer:$exoPlayer"
+    implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
+
+    // preview SeekBar
+    implementation "com.github.rubensousa:previewseekbar:$previewSeekBarVersion"
+    implementation "com.github.rubensousa:previewseekbar-exoplayer:$previewSeekBarWithTimeBarVersion"
 
     // gson
     implementation "com.google.code.gson:gson:$gsonVersion"
@@ -46,7 +50,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitConverterVersion"
 
     // for logging
-    implementation "com.jakewharton.timber:timber:$timberLogging"
+    implementation "com.jakewharton.timber:timber:$timberLoggingVersion"
 
     // architecture components
     implementation "android.arch.lifecycle:runtime:$archComponentsVersion"

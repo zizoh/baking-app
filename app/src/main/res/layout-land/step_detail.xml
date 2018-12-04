@@ -13,6 +13,8 @@
         android:layout_height="match_parent"
         app:controller_layout_id="@layout/exo_playback_control_view"
         app:default_artwork="@drawable/dummy_recipe_preview"
+        app:fastforward_increment="1000"
+        app:rewind_increment="1000"
         app:show_timeout="0"
         app:use_artwork="true" />
 

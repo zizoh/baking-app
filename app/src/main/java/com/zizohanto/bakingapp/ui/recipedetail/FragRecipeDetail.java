@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.rubensousa.previewseekbar.PreviewLoader;
+import com.github.rubensousa.previewseekbar.PreviewView;
+import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -41,7 +44,7 @@ import com.zizohanto.bakingapp.data.database.step.Step;
  * on handsets.
  */
 @SuppressWarnings("RedundantCast")
-public class FragRecipeDetail extends Fragment implements Player.EventListener {
+public class FragRecipeDetail extends Fragment implements Player.EventListener, PreviewLoader, PreviewView.OnPreviewChangeListener {
     private final static String KEY_PLAYBACK_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.key_playback_position";
     private final static String KEY_CURRENT_WINDOW = "com.zizohanto.bakingapp.ui.recipedetail.key_current_window";
     private final static String KEY_PLAY_WHEN_READY = "com.zizohanto.bakingapp.ui.recipedetail.key_play_when_ready";
@@ -53,6 +56,8 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
     private Toolbar mToolbar;
     private SimpleExoPlayer mExoPlayer;
     private PlayerView mPlayerView;
+    private PreviewTimeBar mPreviewTimeBar;
+    private ImageView mImageView;
     private ImageView mThumbnail;
     private Context mContext;
     private long mPlaybackPosition;
@@ -98,6 +103,9 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
 
         mStepShortDescription = (TextView) rootView.findViewById(R.id.step_description);
         mPlayerView = (PlayerView) rootView.findViewById(R.id.playerView);
+        mPreviewTimeBar = (PreviewTimeBar) rootView.findViewById(R.id.exo_progress);
+        mImageView = (ImageView) rootView.findViewById(R.id.imageView);
+        mPreviewTimeBar.addOnPreviewChangeListener(this);
         mThumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
 
         return rootView;
@@ -176,17 +184,7 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
-            releasePlayer();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (Util.SDK_INT > 23) {
-            releasePlayer();
-        }
+        releasePlayer();
     }
 
     private void releasePlayer() {
@@ -256,6 +254,28 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener {
 
     @Override
     public void onSeekProcessed() {
+
+    }
+
+    @Override
+    public void onStartPreview(PreviewView previewView, int progress) {
+
+    }
+
+    @Override
+    public void onStopPreview(PreviewView previewView, int progress) {
+        mExoPlayer.seekTo(progress);
+        mExoPlayer.setPlayWhenReady(true);
+    }
+
+    @Override
+    public void onPreview(PreviewView previewView, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void loadPreview(long currentPosition, long max) {
+        mExoPlayer.setPlayWhenReady(false);
 
     }
 }
