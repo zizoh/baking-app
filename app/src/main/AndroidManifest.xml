@@ -16,13 +16,17 @@
         <activity android:name=".ui.recipes.ActRecipes">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.recipedetail.ActDetailMaster"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".ui.recipes.ActRecipes"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zizohanto.bakingapp.ui.recipes.ActRecipes" />
+        </activity>
         <activity
             android:name=".ui.recipedetail.ActDetailDetail"
             android:parentActivityName=".ui.recipedetail.ActDetailMaster"
@@ -36,7 +40,7 @@
             android:name=".data.network.BakingAppSyncIntentService"
             android:exported="false" />
 
-        <receiver android:name=".IngredientWidgetProvider">
+        <receiver android:name=".widget.IngredientWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -46,7 +50,7 @@
                 android:resource="@xml/ingredient_widget_info" />
         </receiver>
 
-        <service android:name=".IngredientWidgetService" />
+        <service android:name=".widget.IngredientWidgetService" />
     </application>
 
 </manifest>

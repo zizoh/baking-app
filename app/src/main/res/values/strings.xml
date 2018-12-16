@@ -1,10 +1,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Baking App</string>
 
-    <string name="ingredient_list_title">Recipe Ingredients</string>
+    <string name="ingredient_list_title">Ingredient list:</string>
     <string name="recipe_details_ingredient_line" translatable="false">
     <xliff:g id="bullet">\u2022</xliff:g> <xliff:g id="name">%s</xliff:g>
-    (<xliff:g id="quantity">%s</xliff:g> <xliff:g id="measure">%s</xliff:g>)
+    <xliff:g id="quantity">%s</xliff:g> <xliff:g id="measure">%s</xliff:g>
   </string>
     <string name="step_description_sample">3. Press the cookie crumb mixture into the prepared pie pan and bake for 12 minutes. Let crust cool to room temperature.</string>
     <string name="pause">Pause</string>
@@ -13,7 +13,7 @@
     <string name="video_thumbnail">Video Thumbnail</string>
     <string name="add_widget">Add widget</string>
     <string name="show_in_widget">Show in Widget</string>
-    <string name="appwidget_text">Recipe Ingredient</string>
+    <string name="appwidget_text">Ingredient list: </string>
 
     <!-- Key name for storing recipe id in SharedPreferences -->
     <string name="pref_key_recipe_id" translatable="false">Recipe Id</string>
@@ -22,7 +22,8 @@
     <string name="pref_recipe_id_default" translatable="false">1</string>
 
     <string name="content_description_play_button">Play button</string>
-    <string name="recipe_ingredient">Recipe Ingredients</string>
+    <string name="recipe_ingredient">Recipe Ingredients :\nItem1\nItem2</string>
     <string name="recipe_name">Nutella Pie</string>
     <string name="recipe_preview_image">Recipe Image</string>
+    <string name="step_short_desc">Remove from oven and cool at room temperature.</string>
 </resources>

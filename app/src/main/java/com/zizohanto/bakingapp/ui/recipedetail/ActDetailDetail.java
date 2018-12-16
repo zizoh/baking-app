@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.zizohanto.bakingapp.R;
@@ -21,7 +23,7 @@ import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
  * in a {@link ActDetailMaster}.
  */
 @SuppressWarnings({"Convert2Lambda", "RedundantCast"})
-public class ActDetailDetail extends FragmentActivity {
+public class ActDetailDetail extends AppCompatActivity {
     public static final String KEY_CLICKED_POSITION = "com.zizohanto.bakingapp.ui.recipedetail.key_clickec_position";
     public static final String KEY_NUMBER_OF_STEPS = "com.zizohanto.bakingapp.ui.recipedetail.key_number_of_steps";
     public static final String KEY_RECIPE = "com.zizohanto.bakingapp.ui.recipedetail.key_recipe";
@@ -33,12 +35,16 @@ public class ActDetailDetail extends FragmentActivity {
     private int mClickedStepPosition;
     private int mNumberOfSteps;
     private ViewPager mPager;
+    private Toolbar mToolbar;
     private PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_detail_detail);
+
+        mToolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        setUpActionBar(mToolbar);
 
         if (getIntent().hasExtra(EXTRA_RECIPE) && getIntent().hasExtra(EXTRA_CLICKED_STEP_POSITION)) {
             mRecipeResponse = getIntent().getParcelableExtra(EXTRA_RECIPE);
@@ -57,6 +63,15 @@ public class ActDetailDetail extends FragmentActivity {
             mClickedStepPosition = savedInstanceState.getInt(KEY_CLICKED_POSITION);
             mNumberOfSteps = savedInstanceState.getInt(KEY_NUMBER_OF_STEPS);
             mRecipeResponse = savedInstanceState.getParcelable(KEY_RECIPE);
+        }
+    }
+
+    private void setUpActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 

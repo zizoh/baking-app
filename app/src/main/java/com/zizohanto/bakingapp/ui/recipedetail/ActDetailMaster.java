@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,14 +21,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.zizohanto.bakingapp.IngredientWidgetProvider;
-import com.zizohanto.bakingapp.IngredientWidgetService;
 import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.database.step.Step;
 import com.zizohanto.bakingapp.data.utils.InjectorUtils;
 import com.zizohanto.bakingapp.data.utils.StringUtils;
+import com.zizohanto.bakingapp.widget.IngredientWidgetProvider;
+import com.zizohanto.bakingapp.widget.IngredientWidgetService;
 
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
         setContentView(R.layout.act_detail_master_list);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        setUpActionBar(mToolbar);
 
         tvRecipeIngredients = (TextView) findViewById(R.id.tv_recipe_ingredients);
 
@@ -104,6 +105,15 @@ public class ActDetailMaster extends AppCompatActivity implements RecipeStepDesc
         assert mRecyclerView != null;
         setupRecyclerView((RecyclerView) mRecyclerView);
         setupSharedPreferences();
+    }
+
+    private void setUpActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setupViewModel() {

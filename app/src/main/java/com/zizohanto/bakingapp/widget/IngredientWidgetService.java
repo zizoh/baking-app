@@ -1,4 +1,4 @@
-package com.zizohanto.bakingapp;
+package com.zizohanto.bakingapp.widget;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.zizohanto.bakingapp.AppExecutors;
+import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.BakingAppRepository;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.utils.InjectorUtils;

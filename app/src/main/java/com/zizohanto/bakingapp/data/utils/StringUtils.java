@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class StringUtils {
 
-    public static String formatIngredient(Context context, String name, double quantity, String measure) {
+    private static String formatIngredient(Context context, String name, double quantity, String measure) {
 
         String line = context.getString(R.string.recipe_details_ingredient_line);
 
@@ -23,7 +23,7 @@ public class StringUtils {
             quantityStr = String.format(Locale.US, "%d", (long) quantity);
         }
 
-        return String.format(Locale.US, line, name, quantityStr, measure);
+        return String.format(Locale.US, line, quantityStr, measure, name);
     }
 
     private static SpannableStringBuilder buildSpannableString(String fullText, String styledText, StyleSpan style) {
@@ -40,8 +40,11 @@ public class StringUtils {
         sb.append(textViewTitle);
         for (Ingredient ingredient : ingredients) {
             String name = ingredient.getIngredient();
+            name = String.valueOf(name.charAt(0)).toLowerCase() + name.substring(1, name.length());
+
             double quantity = ingredient.getQuantity();
             String measure = ingredient.getMeasure();
+            measure = measure.toLowerCase();
 
             sb.append("\n");
             sb.append(formatIngredient(context, name, quantity, measure));

@@ -1,4 +1,4 @@
-package com.zizohanto.bakingapp;
+package com.zizohanto.bakingapp.widget;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.widget.RemoteViews;
 
+import com.zizohanto.bakingapp.R;
 import com.zizohanto.bakingapp.data.database.ingredient.Ingredient;
 import com.zizohanto.bakingapp.data.database.recipe.RecipeResponse;
 import com.zizohanto.bakingapp.data.utils.StringUtils;
@@ -37,7 +38,7 @@ public class IngredientWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_ingredient_text, ssb);
 
         Intent intent = new Intent(context, ActDetailMaster.class);
-        intent.putExtra(ActDetailMaster.EXTRA_RECIPE, recipe);
+        intent.putExtra(ActDetailMaster.EXTRA_RECIPE_ID, recipe.getId());
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_ingredient_text, pendingIntent);

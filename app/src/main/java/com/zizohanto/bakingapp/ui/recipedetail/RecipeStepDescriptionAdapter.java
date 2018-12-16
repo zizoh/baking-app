@@ -3,9 +3,11 @@ package com.zizohanto.bakingapp.ui.recipedetail;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zizohanto.bakingapp.R;
@@ -71,8 +73,16 @@ public class RecipeStepDescriptionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mIdView.setText(mRecipeSteps.get(position).getShortDescription());
+        Step step = mRecipeSteps.get(position);
+        holder.tvShortStepDescription.setText(step.getShortDescription());
+        if (stepHasVideo(step)) {
+            holder.ivVideoIcon.setVisibility(View.VISIBLE);
+        }
         holder.itemView.setSelected(mSelectedPos == position);
+    }
+
+    private boolean stepHasVideo(Step step) {
+        return !TextUtils.isEmpty(step.getVideoURL());
     }
 
     @Override
@@ -86,11 +96,13 @@ public class RecipeStepDescriptionAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView mIdView;
+        private TextView tvShortStepDescription;
+        private ImageView ivVideoIcon;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = (TextView) view.findViewById(R.id.tv_step_short_desc);
+            tvShortStepDescription = (TextView) view.findViewById(R.id.tv_step_short_desc);
+            ivVideoIcon = (ImageView) view.findViewById(R.id.iv_step_video_icon);
             view.setOnClickListener(this);
         }
 
