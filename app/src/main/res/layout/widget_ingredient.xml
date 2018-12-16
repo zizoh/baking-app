@@ -9,13 +9,12 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="#ffffff"
+        android:background="#FFCDD2"
         android:paddingLeft="@dimen/widget_ingredient_text_padding_horizontal"
         android:paddingTop="@dimen/widget_ingredient_text_padding_vertical"
         android:paddingRight="@dimen/widget_ingredient_text_padding_horizontal"
         android:paddingBottom="@dimen/widget_ingredient_text_padding_vertical"
         android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="@android:color/black" />
+        android:text="@string/appwidget_text" />
 
 </RelativeLayout>

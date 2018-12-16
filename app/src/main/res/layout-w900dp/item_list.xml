@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/ll_item_list_margin_left"
-    android:layout_marginLeft="@dimen/ll_item_list_margin_left"
-    android:layout_marginEnd="@dimen/ll_item_list_margin_right"
-    android:layout_marginRight="@dimen/ll_item_list_margin_right"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -20,7 +16,9 @@
     
     -->
     <LinearLayout
-        android:layout_width="@dimen/item_width"
+        android:layout_width="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="0.5"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -28,10 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/cv_recipe_ingredient_margin_left"
-            android:layout_marginLeft="@dimen/cv_recipe_ingredient_margin_left"
-            android:layout_marginEnd="@dimen/cv_recipe_ingredient_margin_right"
-            android:layout_marginRight="@dimen/cv_recipe_ingredient_margin_right"
             android:layout_marginBottom="@dimen/cv_recipe_ingredient_margin_bottom">
 
             <TextView
@@ -50,12 +44,8 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/rv_step_description"
             android:name="com.zizohanto.bakingapp.ui.ItemListFragment"
-            android:layout_width="@dimen/item_width"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/rv_step_description_margin_left"
-            android:layout_marginLeft="@dimen/rv_step_description_margin_left"
-            android:layout_marginEnd="@dimen/rv_step_description_margin_right"
-            android:layout_marginRight="@dimen/rv_step_description_margin_right"
             android:drawSelectorOnTop="true"
             app:layoutManager="LinearLayoutManager"
             tools:context="com.zizohanto.bakingapp.ui.recipedetail.ActDetailMaster"
@@ -67,6 +57,6 @@
         android:id="@+id/item_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3" />
+        android:layout_weight="0.5" />
 
 </LinearLayout>

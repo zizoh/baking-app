@@ -52,7 +52,7 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener, 
 
     private Step mStep;
 
-    private TextView mStepShortDescription;
+    private TextView mStepDescription;
     private Toolbar mToolbar;
     private SimpleExoPlayer mExoPlayer;
     private PlayerView mPlayerView;
@@ -101,7 +101,7 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener, 
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_detail, container, false);
 
-        mStepShortDescription = (TextView) rootView.findViewById(R.id.step_description);
+        mStepDescription = (TextView) rootView.findViewById(R.id.step_description);
         mPlayerView = (PlayerView) rootView.findViewById(R.id.playerView);
         mPreviewTimeBar = (PreviewTimeBar) rootView.findViewById(R.id.exo_progress);
         mImageView = (ImageView) rootView.findViewById(R.id.imageView);
@@ -119,7 +119,7 @@ public class FragRecipeDetail extends Fragment implements Player.EventListener, 
     }
 
     private void stepStepData(Step step) {
-        mStepShortDescription.setText(String.valueOf(step.getDescription()));
+        mStepDescription.setText(String.valueOf(step.getDescription()));
     }
 
     /**
