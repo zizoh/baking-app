@@ -5,6 +5,6 @@
         android:id="@+id/widget_menu"
         android:menuCategory="secondary"
         android:title="@string/show_in_widget"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
 </menu>
